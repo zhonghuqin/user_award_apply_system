@@ -15,7 +15,9 @@
         <a-layout-sider width="200" class="main-content-sider">
           <MainMenu />
         </a-layout-sider>
-        <a-layout-content class="main-content-layout-content"> <RouterView /> </a-layout-content>
+        <a-layout-content class="main-content-layout-content">
+          <RouterView />
+        </a-layout-content>
       </a-layout>
     </a-layout-content>
     <a-layout-footer class="footer">
@@ -37,6 +39,8 @@ import MainMenu from '@/components/mains-components/mainpage/MainMenu.vue'
 <style scoped>
 .main {
   min-height: 100%;
+  background-image: url('../../assets/images/back6.jpeg');
+  background-size: cover;
 }
 .header {
   background: #02509b;
@@ -53,12 +57,12 @@ import MainMenu from '@/components/mains-components/mainpage/MainMenu.vue'
 .main-content-layout {
   flex: 1;
   padding: 3% 0;
-  background: #ffffff;
+  background-color: rgba(255, 255, 255, 0.6);
   border-radius: 15px;
 }
 
 .main-content-sider {
-  background: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .main-content-layout-content {
@@ -72,5 +76,9 @@ import MainMenu from '@/components/mains-components/mainpage/MainMenu.vue'
 
 .footer-font {
   font-weight: 100;
+}
+:deep :where(.css-dev-only-do-not-override-19yxfbp).ant-menu-light {
+  color: rgba(0, 0, 0, 0.88);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 </style>
