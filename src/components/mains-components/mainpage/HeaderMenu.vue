@@ -18,6 +18,7 @@
         :style="{ lineHeight: '64px', backgroundColor: '#02509b', color: '#fff' }"
         v-model:selectedKeys="current"
         :items="items"
+        @click="examine"
       >
       </a-menu>
     </a-col>
@@ -25,10 +26,10 @@
       <a-tooltip title="退出登录">
         <a-button
           @click="handleExitClick"
-          shape="circle"
           :icon="h(PoweroffOutlined)"
           size="large"
-        ></a-button>
+          style="border-radius: 20px;"
+        >退出登录</a-button>
       </a-tooltip>
     </a-col>
   </a-row>
@@ -45,11 +46,16 @@ const items = ref<MenuProps['items']>([
   {
     key: '1',
     icon: () => h(BellOutlined),
-    label: h('a', { href: 'https://nsu.edu.cn/', target: '_blank' }, '奖项通知说明'),
+    label: '奖项通知说明',
     title: '查看奖项通知说明'
   }
 ])
-
+const examine = (info: { key: string }) => {
+  if (info.key === '1') {
+    window.open('../../../../public/院发〔2023〕013号 关于设立信息与商务管理学院学生学院奖项的通知.pdf',
+    '_blank');
+  }
+};
 function handleExitClick() {
   message.success('退出系统成功,欢迎您下次登录!')
   router.push('/LogIn')

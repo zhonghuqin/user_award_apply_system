@@ -1,6 +1,6 @@
 <!--
     * @FileDescription: 布局页面。
-    * @Author: 李思佳
+    * @Author: 作者信息
     * @Date: 2024年1月22日
     * @LastEditors: 李思佳
     * @LastEditTime: 2024年1月22日
@@ -15,9 +15,7 @@
         <a-layout-sider width="200" class="main-content-sider">
           <MainMenu />
         </a-layout-sider>
-        <a-layout-content class="main-content-layout-content">
-          <RouterView />
-        </a-layout-content>
+        <a-layout-content class="main-content-layout-content"> <RouterView /> </a-layout-content>
       </a-layout>
     </a-layout-content>
     <a-layout-footer class="footer">
@@ -39,8 +37,10 @@ import MainMenu from '@/components/mains-components/mainpage/MainMenu.vue'
 <style scoped>
 .main {
   min-height: 100%;
-  background-image: url('../../assets/images/back6.jpeg');
-  background-size: cover;
+  background-image: url(@/assets/images/bg.jpeg) ;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .header {
   background: #02509b;
@@ -57,12 +57,12 @@ import MainMenu from '@/components/mains-components/mainpage/MainMenu.vue'
 .main-content-layout {
   flex: 1;
   padding: 3% 0;
-  background-color: rgba(255, 255, 255, 0.6);
+  background: #ffffff;
   border-radius: 15px;
 }
 
 .main-content-sider {
-  background-color: rgba(255, 255, 255, 0.1);
+  background: #fff;
 }
 
 .main-content-layout-content {
@@ -72,13 +72,10 @@ import MainMenu from '@/components/mains-components/mainpage/MainMenu.vue'
 .footer {
   text-align: center;
   padding: 0 3%;
+  background-color:rgba(255, 255, 255, 0);
 }
 
 .footer-font {
   font-weight: 100;
-}
-:deep :where(.css-dev-only-do-not-override-19yxfbp).ant-menu-light {
-  color: rgba(0, 0, 0, 0.88);
-  background-color: rgba(255, 255, 255, 0.1);
 }
 </style>
