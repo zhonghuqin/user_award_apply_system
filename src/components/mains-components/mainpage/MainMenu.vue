@@ -12,6 +12,7 @@
       mode="inline"
       v-model:openKeys="openKeys"
       style="height: 100%"
+      class="main-menu"
     >
       <a-menu-item :key="'/HomePage'">
         <router-link to="HomePage"> <HomeOutlined /><span>首页</span></router-link>
@@ -63,4 +64,8 @@ import {
 const openKeys = ref<string[]>(['HomePage'])
 </script>
 
-<style scoped></style>
+<style scoped>
+.main-menu{
+  background-color:rgba(255, 255, 255, 0.5);
+}
+</style>
