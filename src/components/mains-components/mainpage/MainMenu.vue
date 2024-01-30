@@ -43,8 +43,8 @@
         <a-menu-item :key="'/ResearchStar'">
           <router-link to="ResearchStar"> 科研之星报名管理</router-link>
         </a-menu-item>
-        <a-menu-item :key="'/DoubleStar'">
-          <router-link to="DoubleStar"> 双创之星报名管理</router-link>
+        <a-menu-item :key="'/MDoubleStar'">
+          <router-link to="MDoubleStar"> 双创之星报名管理</router-link>
         </a-menu-item>
       </a-sub-menu>
     </a-menu>
@@ -65,7 +65,7 @@ const openKeys = ref<string[]>(['HomePage'])
 </script>
 
 <style scoped>
-.main-menu{
-  background-color:rgba(255, 255, 255, 0.5);
+.main-menu {
+  background-color: rgba(255, 255, 255, 0.5);
 }
 </style>

@@ -62,7 +62,7 @@ const router = createRouter({
           component: () => import('@/views/mains/apply-manage/ResearchStar.vue')
         },
         {
-          path: '/DoubleStar',
+          path: '/MDoubleStar',
           component: () => import('@/views/mains/apply-manage/DoubleStar.vue')
         }
       ]

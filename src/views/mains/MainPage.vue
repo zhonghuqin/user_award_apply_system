@@ -37,7 +37,7 @@ import MainMenu from '@/components/mains-components/mainpage/MainMenu.vue'
 <style scoped>
 .main {
   min-height: 100%;
-  background-image: url(@/assets/images/bg.jpeg) ;
+  background-image: url(@/assets/images/bg.jpeg);
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
@@ -72,7 +72,7 @@ import MainMenu from '@/components/mains-components/mainpage/MainMenu.vue'
 .footer {
   text-align: center;
   padding: 0 3%;
-  background-color:rgba(255, 255, 255, 0);
+  background-color: rgba(255, 255, 255, 0);
 }
 
 .footer-font {

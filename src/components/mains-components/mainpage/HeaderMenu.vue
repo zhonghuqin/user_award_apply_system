@@ -28,8 +28,9 @@
           @click="handleExitClick"
           :icon="h(PoweroffOutlined)"
           size="large"
-          style="border-radius: 20px;"
-        >退出登录</a-button>
+          style="border-radius: 20px"
+          >退出登录</a-button
+        >
       </a-tooltip>
     </a-col>
   </a-row>
@@ -52,10 +53,12 @@ const items = ref<MenuProps['items']>([
 ])
 const examine = (info: { key: string }) => {
   if (info.key === '1') {
-    window.open('../../../../public/院发〔2023〕013号 关于设立信息与商务管理学院学生学院奖项的通知.pdf',
-    '_blank');
+    window.open(
+      '../../../../public/院发〔2023〕013号 关于设立信息与商务管理学院学生学院奖项的通知.pdf',
+      '_blank'
+    )
   }
-};
+}
 function handleExitClick() {
   message.success('退出系统成功,欢迎您下次登录!')
   router.push('/LogIn')

@@ -18,18 +18,10 @@
       请选择年级
       <template #overlay>
         <a-menu>
-          <a-menu-item key="1">
-            选项01
-          </a-menu-item>
-          <a-menu-item key="2">
-            选项02
-          </a-menu-item>
-          <a-menu-item key="3">
-            选项03
-          </a-menu-item>
-          <a-menu-item key="4">
-            选项04
-          </a-menu-item>
+          <a-menu-item key="1"> 选项01 </a-menu-item>
+          <a-menu-item key="2"> 选项02 </a-menu-item>
+          <a-menu-item key="3"> 选项03 </a-menu-item>
+          <a-menu-item key="4"> 选项04 </a-menu-item>
         </a-menu>
       </template>
       <template #icon><DownOutlined /></template>
@@ -38,18 +30,10 @@
       请选择专业
       <template #overlay>
         <a-menu>
-          <a-menu-item key="1">
-            选项01
-          </a-menu-item>
-          <a-menu-item key="2">
-            选项02
-          </a-menu-item>
-          <a-menu-item key="3">
-            选项03
-          </a-menu-item>
-          <a-menu-item key="4">
-            选项04
-          </a-menu-item>
+          <a-menu-item key="1"> 选项01 </a-menu-item>
+          <a-menu-item key="2"> 选项02 </a-menu-item>
+          <a-menu-item key="3"> 选项03 </a-menu-item>
+          <a-menu-item key="4"> 选项04 </a-menu-item>
         </a-menu>
       </template>
       <template #icon><DownOutlined /></template>
@@ -58,18 +42,10 @@
       请选择班级
       <template #overlay>
         <a-menu>
-          <a-menu-item key="1">
-            选项01
-          </a-menu-item>
-          <a-menu-item key="2">
-            选项02
-          </a-menu-item>
-          <a-menu-item key="3">
-            选项03
-          </a-menu-item>
-          <a-menu-item key="4">
-            选项04
-          </a-menu-item>
+          <a-menu-item key="1"> 选项01 </a-menu-item>
+          <a-menu-item key="2"> 选项02 </a-menu-item>
+          <a-menu-item key="3"> 选项03 </a-menu-item>
+          <a-menu-item key="4"> 选项04 </a-menu-item>
         </a-menu>
       </template>
       <template #icon><DownOutlined /></template>
@@ -78,11 +54,11 @@
 </template>
 
 <script setup lang="ts">
-import { DownOutlined} from '@ant-design/icons-vue';
-import type { MenuProps } from 'ant-design-vue';
-const handleMenuClick: MenuProps['onClick'] = e => {
-  console.log('click', e);
-};
+import { DownOutlined } from '@ant-design/icons-vue'
+import type { MenuProps } from 'ant-design-vue'
+const handleMenuClick: MenuProps['onClick'] = (e) => {
+  console.log('click', e)
+}
 </script>
 
 <style scoped>
