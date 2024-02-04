@@ -48,9 +48,11 @@
       <a-form-item label="佐证材料">
         <a-form-item name="dragger" no-style>
           <a-upload-dragger
-            v-model:fileList="formState.dragger"
-            name="files"
-            action="/upload.do"
+            v-model="formState.dragger"
+            name="file"
+            :max-count="1"
+            :action="ossUploadUrl"
+            :headers="headers"
             :beforeUpload="beforeUpload"
             @change="handleChange"
           >
@@ -78,11 +80,13 @@ import { message, Upload } from 'ant-design-vue'
 import type { UploadChangeParam } from 'ant-design-vue'
 import cssAnimation from 'ant-design-vue/es/_util/css-animation'
 import style = cssAnimation.style
+import { BASE_URL } from '@/service/config'
+import { zhqdoubleRequest } from '@/service/mains/double-star/double-star'
 
 interface FormState {
   name: string
-  date1: Dayjs | undefined
-  dragger: any[]
+  date1: string
+  dragger: string
   nature: string
   size: string
   ranking: string
@@ -92,8 +96,8 @@ const labelCol = { span: 9 }
 const wrapperCol = { span: 8 }
 const formState: UnwrapRef<FormState> = reactive({
   name: '',
-  date1: undefined,
-  dragger: [],
+  date1: '',
+  dragger: '',
   nature: '',
   size: '',
   ranking: ''
@@ -106,41 +110,68 @@ const rules: Record<string, Rule[]> = {
   size: [{ required: true, message: '请填写公司规模', trigger: 'change' }],
   dragger: [{ required: true, message: '请上传佐证材料', trigger: 'change' }]
 }
-const onSubmit = () => {
-  formRef.value
-    .validate()
-    .then(() => {
-      console.log('values', formState, toRaw(formState))
-    })
-    .catch((error) => {
-      console.log('error', error)
-    })
+//设置请求头
+const token = localStorage.getItem('LOGIN_TOKEN')
+const headers = {
+  Authorization: 'Bearer ' + token
 }
-//上传pdf
+// 设置上传PDF地址
+const ossUploadUrl = BASE_URL + 'api/stu/OssUpdate'
+async function onSubmit() {
+  // 检查表单是否填写完整
+  if (!formState.name || !formState.date1 || formState.dragger.length === 0) {
+    message.error('请填写完整表单')
+    return
+  }
+
+  // 创建符合期望类型的对象
+  const requestData = {
+    companyname: formState.name,
+    vp: formState.nature,
+    ranking: formState.ranking,
+    signuptime: formState.date1,
+    scale: formState.size,
+    url: formState.dragger
+  }
+  try {
+    // 调用 ContestRequest 函数
+    const response = await zhqdoubleRequest(requestData)
+    console.log(response)
+    // 在接口请求成功后进行提示
+    message.success('提交成功')
+  } catch (error) {
+    // 在接口请求失败时进行提示
+    console.error(error)
+    message.error('提交失败')
+  }
+}
+// 判断只能上传PDF文件
 const beforeUpload = (file: any) => {
   const isPDF = file.type === 'application/pdf'
+  const maxFileSize = 10 * 1024 * 1024
+
   if (!isPDF) {
     message.error('只能上传 PDF 文件！')
+  } else if (file.size > maxFileSize) {
+    message.error('文件大小超过限制10MB！')
+  } else {
+    // message.success('PDF 文件上传成功！');
   }
-  return isPDF || Upload.LIST_IGNORE
+
+  return isPDF && file.size <= maxFileSize
 }
-const fileList = ref([])
 const handleChange = (info: UploadChangeParam) => {
   const status = info.file.status
   if (status !== 'uploading') {
     console.log(info.file, info.fileList)
   }
   if (status === 'done') {
+    const fileurl = info.file.response.data
+    formState.dragger = fileurl
     message.success(`${info.file.name} file uploaded successfully.`)
   } else if (status === 'error') {
     message.error(`${info.file.name} file upload failed.`)
   }
-}
-function handleDrop(e: DragEvent) {
-  console.log(e)
-}
-const resetForm = () => {
-  formRef.value.resetFields()
 }
 </script>
 <style scoped>
