@@ -7,67 +7,114 @@
 -->
 <template>
   <div class="demo-dropdown-wrap">
-    <a-dropdown-button>
+    <a-dropdown-button >
       {{ Selectgrade }}
-      <template #overlay>
+      <template #overlay >
         <a-menu @click="handlegradeMenuClick">
-          <a-menu-item key="选项01">选项01</a-menu-item>
-          <a-menu-item key="选项02">选项02</a-menu-item>
-          <a-menu-item key="选项03">选项03</a-menu-item>
-          <a-menu-item key="选项04"> 选项04 </a-menu-item>
+          <a-menu-item v-for="grade in gradesArray" :key="grade.grade">
+            {{ grade.grade }}
+          </a-menu-item>
         </a-menu>
       </template>
-      <template #icon><DownOutlined /></template>
+      <template #icon ><DownOutlined @click="grade"/></template>
     </a-dropdown-button>
     <a-dropdown-button>
       {{ Selectmajor }}
       <template #overlay>
         <a-menu @click="handlemajorMenuClick">
-          <a-menu-item key="选项01">选项01</a-menu-item>
-          <a-menu-item key="选项02">选项02</a-menu-item>
-          <a-menu-item key="选项03">选项03</a-menu-item>
-          <a-menu-item key="选项04"> 选项04 </a-menu-item>
+          <a-menu-item v-for="major in majorsArray" :key="major.major">
+            {{ major.major }}
+          </a-menu-item>
         </a-menu>
       </template>
-      <template #icon><DownOutlined /></template>
+      <template #icon><DownOutlined  @click="major"/></template>
     </a-dropdown-button>
     <a-dropdown-button>
       {{ Selectclass }}
       <template #overlay>
         <a-menu @click="handleclassMenuClick">
-          <a-menu-item key="选项01">选项01</a-menu-item>
-          <a-menu-item key="选项02">选项02</a-menu-item>
-          <a-menu-item key="选项03">选项03</a-menu-item>
-          <a-menu-item key="选项04"> 选项04 </a-menu-item>
+          <a-menu-item v-for="myclass in myclassesArray" :key="myclass.class">
+            {{ myclass.class }}
+          </a-menu-item>
         </a-menu>
       </template>
-      <template #icon><DownOutlined /></template>
+      <template #icon><DownOutlined  @click="myclass"/></template>
     </a-dropdown-button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, defineProps, defineEmits } from 'vue'
 import { DownOutlined } from '@ant-design/icons-vue'
 import type { MenuProps } from 'ant-design-vue'
-// const handleMenuClick: MenuProps['onClick'] = e => {
-//   console.log('click', e);
-// };
-const Selectgrade = ref('请选择年级')
-const Selectmajor = ref('请选择专业')
-const Selectclass = ref('请选择班级')
-const handlegradeMenuClick = (info: any) => {
-  const selectedOption = info.key
-  Selectgrade.value = `${selectedOption}`
+import { JWHgetgradeRequest } from '@/service/begin/signin/signin'
+import { JWHgetmajorRequest } from '@/service/begin/signin/signin'
+import { JWHgetclassRequest } from '@/service/begin/signin/signin'
+const  emit  = defineEmits();
+
+const selectedGrade = ref('');
+
+interface Grade {
+  grade: string,
 }
+interface Major {
+  major: string,
+}
+interface Class {
+  myclass: string,
+  class:string
+}
+const Selectgrade = ref('请选择年级')
+const gradesArray = ref<Grade[]>([]);
+const Selectmajor = ref('请选择专业')
+const majorsArray = ref<Major[]>([]);
+const Selectclass = ref('请选择班级')
+const myclassesArray = ref<Class[]>([]);
+
+// 年级选项接口
+async function grade() {
+  const gradeResult = await JWHgetgradeRequest()
+    //console.log(gradeResult)
+  if (gradeResult.code == 200) {
+    gradesArray.value = gradeResult.data;
+  }
+}
+// 专业选项接口
+async function major() {
+  const majorResult = await JWHgetmajorRequest()
+    // console.log(majorResult)
+  if (majorResult.code == 200) {
+    majorsArray.value = majorResult.data;
+    // console.log(majorsArray.value)
+  }
+}
+//班级选项接口
+async function myclass() {
+  const myclassResult = await JWHgetclassRequest()
+    // console.log(myclassResult)
+  if (myclassResult.code == 200) {
+    myclassesArray.value = myclassResult.data;
+    // console.log(myclassesArray.value)
+  }
+}
+
+ const handlegradeMenuClick = (info: any) => {
+   const selectedOption = info.key
+   Selectgrade.value = `${selectedOption}`
+   emit('gradeSelected', Selectgrade.value); // 把数据传给父组件
+ }
 const handlemajorMenuClick = (info: any) => {
   const selectedOption = info.key
   Selectmajor.value = `${selectedOption}`
+  emit('majorSelected', Selectmajor.value);
 }
 const handleclassMenuClick = (info: any) => {
   const selectedOption = info.key
   Selectclass.value = `${selectedOption}`
+  emit('classSelected', Selectclass.value);
 }
+
+
 </script>
 
 <style scoped>
@@ -76,4 +123,5 @@ const handleclassMenuClick = (info: any) => {
   margin-left: 9px;
   margin-bottom: 20px;
 }
+
 </style>

@@ -74,7 +74,7 @@
                   </div>
                   <!-- 注册 -->
                   <div v-else>
-                    <SelectMenu />
+                    <SelectMenu @gradeSelected="handleGradeSelected" @majorSelected="handleMajorSelected" @classSelected="handleClassSelected"/>
                     <a-form
                       :model="formState"
                       name="basic"
@@ -119,7 +119,7 @@
                           >
                             <template #addonAfter>
                               <a-radio-button style="background-color: white"
-                                >发送验证码</a-radio-button
+                              @click="sendcode">发送验证码</a-radio-button
                               >
                             </template>
                           </a-input>
@@ -155,11 +155,12 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
-
+import { ref } from 'vue';
 import { message } from 'ant-design-vue'
-
 import SelectMenu from '@/components/mains-components/mainpage/SelectMenu.vue'
 import { JWHLoginRequest } from '@/service/begin/login/login'
+import { JWHemailRequest,JWHsigninRequest } from '@/service/begin/signin/signin'
+
 
 const router = useRouter()
 const state = reactive({
@@ -198,10 +199,6 @@ const getUserValidationRules = (fieldName: string) => [
   {
     required: true,
     message: `${fieldName}不能为空!`
-  },
-  {
-    pattern: /^[a-zA-Z]+\s*(,\s*[a-zA-Z]+\s*)*$/,
-    message: '请输入正确的名字'
   }
 ]
 const getPasswordValidationRules = (fieldName: string) => [
@@ -228,10 +225,6 @@ const getCodeValidationRules = (fieldName: string) => [
   {
     required: true,
     message: `${fieldName}不能为空!`
-  },
-  {
-    pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-    message: '请输入正确的验证码'
   }
 ]
 
@@ -242,22 +235,64 @@ const onFinishFailed = (errorInfo: any) => {
   console.log('Failed:', errorInfo)
 }
 
-function signIn() {
-  router.push('/SignIn')
-}
-
+// 登录接口
 async function logIn() {
   // console.log(formState.useraccount)
   // console.log(formState.password)
   const loginResult = await JWHLoginRequest(formState.useraccount, formState.password)
   // console.log(loginResult)
   if (loginResult.code == 200) {
-    // console.log(loginResult.data)
+     console.log(loginResult.data)
     localStorage.setItem('LOGIN_TOKEN', loginResult.data)
     router.push('/HomePage')
     message.success(`${loginResult.msg}`)
   } else {
     message.warning(`${loginResult.msg}`)
+  }
+}
+//获取选择的年级专业班级
+const selectedGrade = ref('');
+const selectedMajor = ref('');
+const selectedClass = ref('');
+const handleGradeSelected = (value) => {
+  selectedGrade.value = value;
+  // console.log(selectedGrade.value)
+};
+const handleMajorSelected = (value) => {
+  selectedMajor.value = value;
+  // console.log(selectedMajor.value)
+};
+const handleClassSelected = (value) => {
+  selectedClass.value = value;
+  // console.log(selectedClass.value)
+};
+//发送邮箱验证码接口
+async function sendcode() {
+    // console.log(formState.email)
+  const emailResult = await JWHemailRequest(formState.email)
+    // console.log(emailResult)
+  if (emailResult.code == 200) {
+    // console.log(emailResult.data)
+    localStorage.setItem('EMAIL_TOKEN', emailResult.data.code)
+    console.log(emailResult.data.code)
+    message.success(`${emailResult.msg}`)
+  } else {
+    message.warning(`${emailResult.msg}`)
+  }
+}
+
+//注册接口
+async function signIn() {
+  // 取出验证码token
+  const emailToken = localStorage.getItem('EMAIL_TOKEN');
+  // console.log(emailToken)
+  const signInResult = await JWHsigninRequest(selectedGrade.value,selectedMajor.value,selectedClass.value, formState.username,formState.useraccount,formState.password,formState.email,formState.code,emailToken)
+  // console.log(emailToken)
+  if (signInResult.code == 200) {
+    router.push('/Login')
+    message.success(`${signInResult.msg}`)
+  } else {
+    message.warning(`${signInResult.msg}`)
   }
 }
 
