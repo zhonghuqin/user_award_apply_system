@@ -80,8 +80,8 @@
                             placeholder="请输入邮箱"
                           >
                             <template #addonAfter>
-                              <a-radio-button style="background-color: white"
-                              @click="sendcode">发送验证码</a-radio-button
+                              <a-radio-button style="background-color: white" @click="sendcode"
+                                >发送验证码</a-radio-button
                               >
                             </template>
                           </a-input>
@@ -115,7 +115,7 @@ import SelectMenu from '@/components/mains-components/mainpage/SelectMenu.vue'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
-import { JWHemailRequest,JWHforgetRequest } from '@/service/begin/forgot-password/forgot-password'
+import { JWHemailRequest, JWHforgetRequest } from '@/service/begin/forgot-password/forgot-password'
 
 const router = useRouter()
 const state = reactive({
@@ -200,9 +200,9 @@ const onFinishFailed = (errorInfo: any) => {
 }
 //发送邮箱验证码接口
 async function sendcode() {
-    // console.log(formState.email)
+  // console.log(formState.email)
   const emailResult = await JWHemailRequest(formState.email)
-    // console.log(emailResult)
+  // console.log(emailResult)
   if (emailResult.code == 200) {
     // console.log(emailResult.data)
     localStorage.setItem('EMAIL_TOKEN', emailResult.data.code)
@@ -215,15 +215,21 @@ async function sendcode() {
 //注册接口
 async function regest() {
   // 取出验证码token
-  const emailToken = localStorage.getItem('EMAIL_TOKEN');
+  const emailToken = localStorage.getItem('EMAIL_TOKEN')
   // console.log(emailToken)
-  const forgetResult = await JWHforgetRequest( formState.useraccount,formState.email,formState.code,emailToken,formState.password)
+  const forgetResult = await JWHforgetRequest(
+    formState.useraccount,
+    formState.email,
+    formState.code,
+    emailToken,
+    formState.password
+  )
   // console.log(emailToken)
   if (forgetResult.code == 200) {
     router.push('/Login')
-    message.success(`${forgetResult .msg}`)
+    message.success(`${forgetResult.msg}`)
   } else {
-    message.warning(`${forgetResult .msg}`)
+    message.warning(`${forgetResult.msg}`)
   }
 }
 </script>

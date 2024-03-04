@@ -17,10 +17,20 @@ import lsjRequest from '../..'
  * @param {string} hascode 验证码密钥
  * @method post
  */
-export function JWHsigninRequest(grade: string,major: string,myclass: string,stuname: string,stuid: string,password: string,email: string,code: string,hascode: any) {
+export function JWHsigninRequest(
+  grade: string,
+  major: string,
+  myclass: string,
+  stuname: string,
+  stuid: string,
+  password: string,
+  email: string,
+  code: string,
+  hascode: any
+) {
   return lsjRequest.post({
     url: '/api/stu/register',
-    data: { grade,major,class:myclass,stuname,stuid,password,email,code,hascode }
+    data: { grade, major, class: myclass, stuname, stuid, password, email, code, hascode }
   })
 }
 
@@ -30,17 +40,17 @@ export function JWHsigninRequest(grade: string,major: string,myclass: string,stu
  */
 export function JWHgetgradeRequest() {
   return lsjRequest.get({
-    url: '/api/getgrade',
+    url: '/api/getgrade'
   })
 }
 export function JWHgetmajorRequest() {
   return lsjRequest.get({
-    url: '/api/getmajor',
+    url: '/api/getmajor'
   })
 }
 export function JWHgetclassRequest() {
   return lsjRequest.get({
-    url: '/api/getclass',
+    url: '/api/getclass'
   })
 }
 
