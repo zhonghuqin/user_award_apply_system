@@ -81,7 +81,7 @@
                           >
                             <template #addonAfter>
                               <a-radio-button style="background-color: white"
-                                >发送验证码</a-radio-button
+                              @click="sendcode">发送验证码</a-radio-button
                               >
                             </template>
                           </a-input>
@@ -98,7 +98,7 @@
                       </a-form-item>
                     </a-form>
                   </div>
-                  <a-button type="primary" class="submit" @click="LogIn">确认</a-button>
+                  <a-button type="primary" class="submit" @click="regest">确认</a-button>
                 </div>
               </div>
             </a-col>
@@ -113,7 +113,9 @@
 import { reactive } from 'vue'
 import SelectMenu from '@/components/mains-components/mainpage/SelectMenu.vue'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
+import { JWHemailRequest,JWHforgetRequest } from '@/service/begin/forgot-password/forgot-password'
 
 const router = useRouter()
 const state = reactive({
@@ -196,8 +198,33 @@ const onFinish = (values: any) => {
 const onFinishFailed = (errorInfo: any) => {
   console.log('Failed:', errorInfo)
 }
-function LogIn() {
-  router.push('/LogIn')
+//发送邮箱验证码接口
+async function sendcode() {
+    // console.log(formState.email)
+  const emailResult = await JWHemailRequest(formState.email)
+    // console.log(emailResult)
+  if (emailResult.code == 200) {
+    // console.log(emailResult.data)
+    localStorage.setItem('EMAIL_TOKEN', emailResult.data.code)
+    console.log(emailResult.data.code)
+    message.success(`${emailResult.msg}`)
+  } else {
+    message.warning(`${emailResult.msg}`)
+  }
+}
+//注册接口
+async function regest() {
+  // 取出验证码token
+  const emailToken = localStorage.getItem('EMAIL_TOKEN');
+  // console.log(emailToken)
+  const forgetResult = await JWHforgetRequest( formState.useraccount,formState.email,formState.code,emailToken,formState.password)
+  // console.log(emailToken)
+  if (forgetResult.code == 200) {
+    router.push('/Login')
+    message.success(`${forgetResult .msg}`)
+  } else {
+    message.warning(`${forgetResult .msg}`)
+  }
 }
 </script>
 
